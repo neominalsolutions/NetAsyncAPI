@@ -18,11 +18,15 @@ namespace WebAPI.Controllers
 
     public async Task<IActionResult> GetDataAsync()
     {
+
+      throw new Exception("Hata");
+
       return Ok("Only See Authenticated User");
     }
 
     // Jwt payload içerisinde role varsa buraya girer yoksa girmez.
     [Authorize(Roles = "admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpGet("onlyAdmin")]
     public async Task<IActionResult> CheckRoleAsync()
     {
       return Ok("Only Admin User");

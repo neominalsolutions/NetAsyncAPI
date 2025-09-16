@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebAPI.Context;
 using WebAPI.Entity;
+using WebAPI.Middlewares;
 using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Not: Middleware yada Pipileine için Transient kullanalým
+builder.Services.AddTransient<CustomErrorHandlingMiddleware>();
 
 // Net Core uygulamalarýnda IoC Authentication Servis yüklenmeli
 
@@ -88,6 +92,18 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication(); // Tüm requestlerde authentication kontrol et
 app.UseAuthorization();
+
+// Custom Middlewares
+
+//app.Use(async (context, next) =>
+//{
+//  await next();
+
+//});
+
+app.UseMiddleware<CustomErrorHandlingMiddleware>();
+
+
 
 app.MapControllers();
 
